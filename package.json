@@ -1,0 +1,17 @@
+{
+  "name": "velocity-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "sudo node app.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.4",
+    "express-subdomain": "^1.0.5",
+    "fs": "0.0.1-security",
+    "https": "^1.0.0"
+  }
+}
