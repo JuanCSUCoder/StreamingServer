@@ -5,7 +5,7 @@ var app = express();
 var router = express.Router();
 var fs = require('fs');
 
-app.use(subdomain('jcsu',router));
+app.use(router);
 
 var server = https.createServer({
     key: fs.readFileSync('/mnt/DATOS Linux/Dropbox/Documentos/2019/Projects 2019/Certificado HTTPS/clave_priv.key'),
