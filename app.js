@@ -28,18 +28,23 @@ app.get('/capture',(req,res)=>{
     console.log('Conexión a Pagina de Recepción');
 })
 
-var frame = "";
+var frames = [];
+var crfr = 0;
+var csfr = 0;
 
 router.get('/upframe',(req,res)=>{
-    frame = req.query.dtaurl;
-    console.log("Rcvd Frame: "+frame);
+    frames[crfr] = req.query.dtaurl;
+    console.log("Rcvd Frame: "+crfr);
+    crfr++;
     res.send('OK');
     res.end();
 });
 
 router.get('/gfram',(req,res)=>{
+    console.log('Snt Frame: '+csfr);
+    csfr++;
     res.json({
-        fr: frame,
+        fr: frames[csfr],
     });
     res.end();
 });
