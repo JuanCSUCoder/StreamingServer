@@ -10,7 +10,6 @@ app.use(router);
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: true }));
 
-
 var server = https.createServer({
     key: fs.readFileSync('/mnt/DATOS Linux/Dropbox/Documentos/2019/Projects 2019/Certificado HTTPS/clave_priv.key'),
     cert: fs.readFileSync('/mnt/DATOS Linux/Dropbox/Documentos/2019/Projects 2019/Certificado HTTPS/certificado.crt'),
@@ -32,8 +31,8 @@ var frames = [];
 var crfr = 0;
 var csfr = 0;
 
-router.get('/upframe',(req,res)=>{
-    frames[crfr] = req.query.dtaurl;
+router.post('/upframe',(req,res)=>{
+    frames[crfr] = req.body.dtaurl;
     console.log("Rcvd Frame: "+crfr);
     crfr++;
     res.send('OK');
@@ -47,4 +46,12 @@ router.get('/gfram',(req,res)=>{
         fr: frames[csfr],
     });
     res.end();
+});
+
+router.get('/set/crfr',(req,res)=>{
+    crfr = req.query.val;
+});
+
+router.get('/set/csfr',(req,res)=>{
+    csfr = req.query.val;
 });

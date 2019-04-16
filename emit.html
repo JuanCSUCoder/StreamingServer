@@ -28,9 +28,14 @@
 
         function sendCanvasFrame(){
             ctx.drawImage(video,0,0,640,480);
-            var dataURL = canvas.toDataURL('image/jpeg',0.01);
+            var dataURL = canvas.toDataURL('image/jpeg',0.8);
             img.src = dataURL;
-            fetch('https://localhost/upframe?dtaurl='+dataURL);
+            fetch('https://localhost/upframe',{
+                method:'POST',
+                body: JSON.stringify({
+                    dtaurl: dataURL,
+                })
+            });
             console.log('update');
         }
 
