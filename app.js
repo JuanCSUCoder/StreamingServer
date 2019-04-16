@@ -23,11 +23,23 @@ app.get('/emit',(req,res)=>{
     console.log('Conexion a Pagina de Emision');
 });
 
+app.get('/capture',(req,res)=>{
+    res.sendfile('recieve.html');
+    console.log('Conexión a Pagina de Recepción');
+})
+
 var frame = "";
 
 router.get('/upframe',(req,res)=>{
     frame = req.query.dtaurl;
     console.log("Rcvd Frame: "+frame);
     res.send('OK');
+    res.end();
+});
+
+router.get('/gfram',(req,res)=>{
+    res.json({
+        fr: frame,
+    });
     res.end();
 });
