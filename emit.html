@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Selector</title>
+</head>
+<body>
+    <video src="" id="vid"></video>
+    <canvas id="canv"></canvas>
+    <img src="" alt="Pre Visor del Streaming" id="img">
+    <script>
+        video = document.getElementById('vid');
+        canvas = document.getElementById('canv');
+        ctx = canvas.getContext('2d');
+        img = document.getElementById('img');
+        canvas.height = 480;
+        canvas.width = 640;
+
+        navigator.getUserMedia({video: true, audio: false},(stream)=>{
+            console.log('Stream Started');
+            video.srcObject = stream;
+            video.play();
+        },(err)=>{
+            console.log('Error: '+err);
+        });
+
+        function sendCanvasFrame(){
+            ctx.drawImage(video,0,0,640,480);
+            var dataURL = canvas.toDataURL('image/jpeg',0.1);
+            img.src = dataURL;
+            fetch('https://localhost/upframe?dtaurl='+dataURL);
+            console.log('update');
+        }
+
+        setInterval(sendCanvasFrame,1000/24);
+    </script>
+</body>
+</html>
