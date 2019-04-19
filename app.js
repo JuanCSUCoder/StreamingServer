@@ -7,8 +7,7 @@ var fs = require('fs');
 var bp = require('body-parser');
 
 app.use(router);
-app.use(bp.json());
-app.use(bp.urlencoded({ extended: true }));
+router.use(bp.text());
 
 var server = https.createServer({
     key: fs.readFileSync('/mnt/DATOS Linux/Dropbox/Documentos/2019/Projects 2019/Certificado HTTPS/clave_priv.key'),
@@ -27,12 +26,12 @@ app.get('/capture',(req,res)=>{
     console.log('Conexión a Pagina de Recepción');
 })
 
-var frames = [];
+var frames = '';
 var crfr = 0;
 var csfr = 0;
 
 router.post('/upframe',(req,res)=>{
-    frames[crfr] = req.body.dtaurl;
+    frames = req.body;
     console.log("Rcvd Frame: "+crfr);
     crfr++;
     res.send('OK');
@@ -43,7 +42,7 @@ router.get('/gfram',(req,res)=>{
     console.log('Snt Frame: '+csfr);
     csfr++;
     res.json({
-        fr: frames[csfr],
+        fr: frames,
     });
     res.end();
 });
