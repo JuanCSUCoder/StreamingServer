@@ -7,9 +7,7 @@ var fs = require('fs');
 var bp = require('body-parser');
 
 app.use(router);
-app.use(bp.json());
-app.use(bp.urlencoded({ extended: true }));
-
+router.use(bp.text());
 
 var server = https.createServer({
     key: fs.readFileSync('/mnt/DATOS Linux/Dropbox/Documentos/2019/Projects 2019/Certificado HTTPS/clave_priv.key'),
@@ -28,23 +26,45 @@ app.get('/capture',(req,res)=>{
     console.log('Conexión a Pagina de Recepción');
 })
 
-var frames = [];
-var crfr = 0;
-var csfr = 0;
+var streams = [];
+var nstreams = 0;
 
-router.get('/upframe',(req,res)=>{
-    frames[crfr] = req.query.dtaurl;
-    console.log("Rcvd Frame: "+crfr);
-    crfr++;
-    res.send('OK');
+router.get('/gid',(req,res)=>{
+    nstreams++;
+    console.log("Nueva Conexión en: "+nstreams);
+    res.json({
+        id: nstreams,
+    });
     res.end();
 });
 
-router.get('/gfram',(req,res)=>{
-    console.log('Snt Frame: '+csfr);
-    csfr++;
-    res.json({
-        fr: frames[csfr],
-    });
-    res.end();
+router.post('/upframe/:a',(req,res)=>{
+    var id = req.params.a;
+    if(id!=0){
+        streams[id] = req.body;
+        res.send('OK');
+        res.end();
+    }else{
+        res.status(100).send('ERROR');
+    }
+});
+
+router.get('/gfram/:a',(req,res)=>{
+    var id = req.params.a;
+    if(id!=0){
+        res.json({
+            fr: streams[id],
+        });
+        res.end();
+    }else{
+        res.status(100).send('ERROR');
+    }
+});
+
+router.get('/set/crfr',(req,res)=>{
+    crfr = req.query.val;
+});
+
+router.get('/set/csfr',(req,res)=>{
+    csfr = req.query.val;
 });

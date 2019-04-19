@@ -7,16 +7,27 @@
     <title>Receptor</title>
 </head>
 <body>
+    <form action="javascript:ststr()">
+        <input type="number" name="strid" id="strid">
+        <input type="submit" value="Submit">
+    </form>
     <img src="" alt="" id="img">
     <script>
         var img = document.getElementById('img');
+        var id = 1;
 
         function updatefr(){
-            fetch('https://localhost/gfram').then(response=>{
+            fetch('/gfram/'+id).then(response=>{
                 return response.json();
             }).then((resjson => {img.src = resjson.fr;}));
         }
 
+        function ststr(){
+            var txboxid = document.getElementById('strid');
+            id = parseInt(txboxid.value);
+            setInterval(updatefr,1000/23);
+            console.log("ID: "+id);
+        }
         setInterval(updatefr,1000/23);
     </script>
 </body>

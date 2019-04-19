@@ -7,6 +7,7 @@
     <title>Emisor</title>
 </head>
 <body>
+    <p><strong>ID: </strong><p id="idtext"></p></p>
     <video src="" id="vid"></video>
     <canvas id="canv"></canvas>
     <img src="" alt="Pre Visor del Streaming" id="img">
@@ -25,13 +26,25 @@
         },(err)=>{
             console.log('Error: '+err);
         });
+        var idtx = document.getElementById('idtext');
+        var strid = 0;
+        fetch('/gid').then(response=>response.json()).then((resjson)=>{
+            strid = resjson.id;
+            idtx.innerHTML = strid;
+        });
 
         function sendCanvasFrame(){
             ctx.drawImage(video,0,0,640,480);
-            var dataURL = canvas.toDataURL('image/jpeg',0.01);
+            var dataURL = canvas.toDataURL('image/jpeg',0.8);
             img.src = dataURL;
-            fetch('https://localhost/upframe?dtaurl='+dataURL);
-            console.log('update');
+            fetch('/upframe/'+strid,{
+                method:'POST',
+                headers: {
+                    'Content-Type':'text/plain'
+                },
+                body: dataURL
+            });
+            console.log('update to id: '+strid);
         }
 
         setInterval(sendCanvasFrame,1000/24);
